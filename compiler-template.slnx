@@ -1,8 +1,10 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/ExampleLib/ExampleLib.csproj" />
+    <Project Path="src/Lexing/Lexing.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/ExampleLib.UnitTests/ExampleLib.UnitTests.csproj" />
+    <Project Path="tests/Lexing.UnitTests/Lexing.UnitTests.csproj" />
   </Folder>
 </Solution>

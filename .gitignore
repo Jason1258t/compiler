@@ -24,3 +24,4 @@ tests/coverage-report/
 
 # Sandbox directory
 sandbox/
+*.DS_Store
