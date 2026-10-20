@@ -11,36 +11,79 @@ public enum TokenType
     EndOfFile,
 
     /// <summary>
-    ///  Идентификатор, например <c>value</c>.
+    ///  Идентификатор.
     /// </summary>
     Identifier,
 
     /// <summary>
-    ///  Литерал целого числа, например <c>42</c>.
+    ///  Литерал целого числа.
     /// </summary>
     IntegerLiteral,
 
     /// <summary>
-    ///  Литерал строки, например <c>"text"</c>.
+    ///  Литерал строки.
     /// </summary>
     StringLiteral,
 
-    // Ключевые слова.
+    /// <summary>
+    ///  Ключевое слово <c>bool</c> — логический тип.
+    /// </summary>
     Bool,
-    Else,
-    False,
-    Fn,
-    If,
-    Int,
-    Let,
-    New,
-    Return,
-    Str,
-    Struct,
-    True,
-    While,
 
-    // Операторы выражений.
+    /// <summary>
+    ///  Ключевое слово <c>true</c> — логический литерал «истина».
+    /// </summary>
+    True,
+
+    /// <summary>
+    ///  Ключевое слово <c>false</c> — логический литерал «ложь».
+    /// </summary>
+    False,
+
+    /// <summary>
+    ///  Ключевое слово <c>if</c> — начало условного блока.
+    /// </summary>
+    If,
+
+    /// <summary>
+    ///  Ключевое слово <c>else</c> — начало альтернативной ветви условного блока.
+    /// </summary>
+    Else,
+
+    /// <summary>
+    ///  Ключевое слово <c>int</c> — целочисленный тип.
+    /// </summary>
+    Int,
+
+    /// <summary>
+    ///  Ключевое слово <c>fn</c> — объявление функции.
+    /// </summary>
+    Fn,
+
+    /// <summary>
+    ///  Ключевое слово <c>let</c> — объявление переменной.
+    /// </summary>
+    Let,
+
+    /// <summary>
+    ///  Ключевое слово <c>return</c> — возврат значения из функции.
+    /// </summary>
+    Return,
+
+    /// <summary>
+    ///  Ключевое слово <c>str</c> — строковый тип.
+    /// </summary>
+    Str,
+
+    /// <summary>
+    ///  Ключевое слово <c>struct</c> — объявление структуры.
+    /// </summary>
+    Struct,
+
+    /// <summary>
+    ///  Ключевое слово <c>while</c>.
+    /// </summary>
+    While,
 
     /// <summary>
     ///  Оператор присваивания <c>=</c>.
@@ -58,17 +101,17 @@ public enum TokenType
     NotEqual,
 
     /// <summary>
-    ///  Оператор <c>&lt;</c>.
+    ///  Оператор <c>></c>.
     /// </summary>
     Less,
 
     /// <summary>
-    ///  Оператор <c>&lt;=</c>.
+    ///  Оператор <c>>=</c>.
     /// </summary>
     LessOrEqual,
 
     /// <summary>
-    ///  Оператор <c>&gt;</c>.
+    ///  Оператор <c></c>.
     /// </summary>
     Greater,
 
@@ -122,7 +165,25 @@ public enum TokenType
     /// </summary>
     Dot,
 
-    // Прочие лексемы.
+    /// <summary>
+    ///  Символ <c>}</c>.
+    /// </summary>
+    CloseBrace,
+
+    /// <summary>
+    ///  Символ <c>,</c>.
+    /// </summary>
+    Comma,
+
+    /// <summary>
+    ///  Символ <c>;</c>.
+    /// </summary>
+    Semicolon,
+
+    /// <summary>
+    ///  Символ <c>:</c>.
+    /// </summary>
+    Colon,
 
     /// <summary>
     ///  Символ <c>[</c>.
@@ -148,24 +209,4 @@ public enum TokenType
     ///  Символ <c>{</c>.
     /// </summary>
     OpenBrace,
-
-    /// <summary>
-    ///  Символ <c>}</c>.
-    /// </summary>
-    CloseBrace,
-
-    /// <summary>
-    ///  Символ <c>,</c>.
-    /// </summary>
-    Comma,
-
-    /// <summary>
-    ///  Символ <c>;</c>.
-    /// </summary>
-    Semicolon,
-
-    /// <summary>
-    ///  Символ <c>:</c>.
-    /// </summary>
-    Colon,
 }

@@ -120,7 +120,7 @@ public class LexerTest
             {
                 """
                 struct Point { x: int; y: int; }
-                let points: Point[] = new Point[3];
+                let points: Point[] = [a, b];
                 while (i < 3 && !done) { points[i].x = i % 2; }
                 if (s != "end") { print(s); } else { println("bye"); }
                 """,
@@ -130,8 +130,8 @@ public class LexerTest
                     Identifier("y"), Of(TokenType.Colon), Of(TokenType.Int), Of(TokenType.Semicolon),
                     Of(TokenType.CloseBrace),
                     Of(TokenType.Let), Identifier("points"), Of(TokenType.Colon), Identifier("Point"),
-                    Of(TokenType.OpenBracket), Of(TokenType.CloseBracket), Of(TokenType.Assign), Of(TokenType.New),
-                    Identifier("Point"), Of(TokenType.OpenBracket), Integer(3), Of(TokenType.CloseBracket),
+                    Of(TokenType.OpenBracket), Of(TokenType.CloseBracket), Of(TokenType.Assign), Of(TokenType.OpenBracket),
+                    Identifier("a"), Of(TokenType.Comma), Identifier("b"), Of(TokenType.CloseBracket),
                     Of(TokenType.Semicolon),
                     Of(TokenType.While), Of(TokenType.OpenParenthesis), Identifier("i"), Of(TokenType.Less), Integer(3),
                     Of(TokenType.And), Of(TokenType.Not), Identifier("done"), Of(TokenType.CloseParenthesis),
@@ -182,7 +182,6 @@ public class LexerTest
             { "if", TokenType.If },
             { "int", TokenType.Int },
             { "let", TokenType.Let },
-            { "new", TokenType.New },
             { "return", TokenType.Return },
             { "str", TokenType.Str },
             { "struct", TokenType.Struct },

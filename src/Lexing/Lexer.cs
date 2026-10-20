@@ -17,7 +17,6 @@ public class Lexer
         { "if", TokenType.If },
         { "int", TokenType.Int },
         { "let", TokenType.Let },
-        { "new", TokenType.New },
         { "return", TokenType.Return },
         { "str", TokenType.Str },
         { "struct", TokenType.Struct },
