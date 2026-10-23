@@ -11,6 +11,7 @@ public class LexerTest
     public void Can_tokenize_programs(string code, List<Token> expected)
     {
         List<Token> actual = Lexer.Tokenize(code);
+
         Assert.Equal(expected, actual);
     }
 
@@ -19,6 +20,7 @@ public class LexerTest
     public void Can_tokenize_keywords(string code, TokenType expected)
     {
         List<Token> actual = Lexer.Tokenize(code);
+
         Assert.Equal([Of(expected)], actual);
     }
 
@@ -27,6 +29,7 @@ public class LexerTest
     public void Can_tokenize_operators_and_punctuation(string code, TokenType expected)
     {
         List<Token> actual = Lexer.Tokenize(code);
+
         Assert.Equal([Of(expected)], actual);
     }
 
@@ -35,6 +38,7 @@ public class LexerTest
     public void Prefers_longest_lexeme(string code, List<Token> expected)
     {
         List<Token> actual = Lexer.Tokenize(code);
+
         Assert.Equal(expected, actual);
     }
 
@@ -43,6 +47,7 @@ public class LexerTest
     public void Can_tokenize_identifiers(string code, List<Token> expected)
     {
         List<Token> actual = Lexer.Tokenize(code);
+
         Assert.Equal(expected, actual);
     }
 
@@ -51,6 +56,7 @@ public class LexerTest
     public void Can_tokenize_integer_literals(string code, List<Token> expected)
     {
         List<Token> actual = Lexer.Tokenize(code);
+
         Assert.Equal(expected, actual);
     }
 
@@ -59,6 +65,7 @@ public class LexerTest
     public void Can_tokenize_string_literals(string code, List<Token> expected)
     {
         List<Token> actual = Lexer.Tokenize(code);
+
         Assert.Equal(expected, actual);
     }
 
@@ -67,6 +74,7 @@ public class LexerTest
     public void Skips_whitespaces_and_comments(string code, List<Token> expected)
     {
         List<Token> actual = Lexer.Tokenize(code);
+
         Assert.Equal(expected, actual);
     }
 
@@ -74,16 +82,21 @@ public class LexerTest
     public void Returns_end_of_file_repeatedly_after_end_of_text()
     {
         Lexer lexer = new("x");
+
         List<Token> actual = [lexer.ParseToken(), lexer.ParseToken(), lexer.ParseToken()];
+
         Assert.Equal([Identifier("x"), Of(TokenType.EndOfFile), Of(TokenType.EndOfFile)], actual);
     }
 
     [Theory]
     [MemberData(nameof(GetLexicalErrorsData))]
-    public void Reports_lexical_errors(string code, int line, int column)
+    public void Reports_lexical_errors(string code, int line, int column, string reason)
     {
-        LexicalException exception = Assert.Throws<LexicalException>(() => Lexer.Tokenize(code));
-        Assert.Equal((line, column), (exception.Line, exception.Column));
+        Exception? exception = Record.Exception(() => Lexer.Tokenize(code));
+
+        LexicalException lexicalException = Assert.IsType<LexicalException>(exception);
+        Assert.Equal((line, column), (lexicalException.Line, lexicalException.Column));
+        Assert.Equal($"Лексическая ошибка в строке {line}, столбце {column}: {reason}", lexicalException.Message);
     }
 
     public static TheoryData<string, List<Token>> GetProgramsData()
@@ -401,61 +414,66 @@ public class LexerTest
         };
     }
 
-    public static TheoryData<string, int, int> GetLexicalErrorsData()
+    public static TheoryData<string, int, int, string> GetLexicalErrorsData()
     {
-        return new TheoryData<string, int, int>
+        const string integerOverflow = "литерал целого числа превышает 2147483647";
+        const string unclosedString = "литерал строки без закрывающей кавычки";
+        const string invalidEscape = "недопустимая escape-последовательность";
+        const string unclosedComment = "незавершённый многострочный комментарий";
+
+        return new TheoryData<string, int, int, string>
         {
             // Символы, с которых не начинается ни одна лексема.
-            { "@", 1, 1 },
-            { "#", 1, 1 },
-            { "$", 1, 1 },
-            { "a ? b", 1, 3 },
-            { "x\n  ~", 2, 3 },
-            { "x\r\n^", 2, 1 },
-            { "x\r\r'", 3, 1 },
-            { "\"a\" `", 1, 5 },
+            { "@", 1, 1, "недопустимый символ '@'" },
+            { "#", 1, 1, "недопустимый символ '#'" },
+            { "$", 1, 1, "недопустимый символ '$'" },
+            { "a ? b", 1, 3, "недопустимый символ '?'" },
+            { "x\n  ~", 2, 3, "недопустимый символ '~'" },
+            { "x\r\n^", 2, 1, "недопустимый символ '^'" },
+            { "x\r\r'", 3, 1, "недопустимый символ '''" },
+            { "\"a\" `", 1, 5, "недопустимый символ '`'" },
 
             // Буквы не из английского алфавита.
-            { "переменная", 1, 1 },
-            { "abc€", 1, 4 },
+            { "переменная", 1, 1, "недопустимый символ 'п'" },
+            { "abc€", 1, 4, "недопустимый символ '€'" },
 
             // Пробельные символы, не входящие в список допустимых.
-            { "a\vb", 1, 2 },
-            { "a\fb", 1, 2 },
-            { "a\u00A0b", 1, 2 },
+            { "a\vb", 1, 2, "недопустимый символ '\v'" },
+            { "a\fb", 1, 2, "недопустимый символ '\f'" },
+            { "a\u00A0b", 1, 2, "недопустимый символ '\u00A0'" },
 
             // Одиночные & и |.
-            { "&", 1, 1 },
-            { "|", 1, 1 },
-            { "a & b", 1, 3 },
-            { "a | b", 1, 3 },
-            { "&&&", 1, 3 },
+            { "&", 1, 1, "недопустимый символ '&'" },
+            { "|", 1, 1, "недопустимый символ '|'" },
+            { "a & b", 1, 3, "недопустимый символ '&'" },
+            { "a | b", 1, 3, "недопустимый символ '|'" },
+            { "&&&", 1, 3, "недопустимый символ '&'" },
 
             // Литерал целого числа больше 2147483647.
-            { "2147483648", 1, 1 },
-            { "x = 99999999999999999999;", 1, 5 },
-            { "-2147483648", 1, 2 },
+            { "2147483648", 1, 1, integerOverflow },
+            { "x = 99999999999999999999;", 1, 5, integerOverflow },
+            { "-2147483648", 1, 2, integerOverflow },
 
             // Литерал строки без закрывающей кавычки.
-            { "\"", 1, 1 },
-            { "\"abc", 1, 1 },
-            { "x = \"abc\n\";", 1, 5 },
-            { "\"abc\r\"", 1, 1 },
-            { "\"abc\\\"", 1, 1 },
+            { "\"", 1, 1, unclosedString },
+            { "\"abc", 1, 1, unclosedString },
+            { "x = \"abc\n\";", 1, 5, unclosedString },
+            { "\"abc\r\"", 1, 1, unclosedString },
+            { "\"abc\\\"", 1, 1, unclosedString },
 
             // Недопустимые escape-последовательности.
-            { "\"\\a\"", 1, 2 },
-            { "\"\\0\"", 1, 2 },
-            { "\"\\'\"", 1, 2 },
-            { "\"ok\\x\"", 1, 4 },
-            { "\"\\N\"", 1, 2 },
-            { "\"abc\\", 1, 5 },
+            { "\"\\a\"", 1, 2, invalidEscape },
+            { "\"\\0\"", 1, 2, invalidEscape },
+            { "\"\\'\"", 1, 2, invalidEscape },
+            { "\"ok\\x\"", 1, 4, invalidEscape },
+            { "\"\\N\"", 1, 2, invalidEscape },
+            { "\"abc\\", 1, 5, invalidEscape },
 
             // Многострочный комментарий без завершающего "*/".
-            { "/*", 1, 1 },
-            { "/* comment", 1, 1 },
-            { "x\n /* comment *", 2, 2 },
-            { "/*/", 1, 1 },
+            { "/*", 1, 1, unclosedComment },
+            { "/* comment", 1, 1, unclosedComment },
+            { "x\n /* comment *", 2, 2, unclosedComment },
+            { "/*/", 1, 1, unclosedComment },
         };
     }
 }

@@ -101,22 +101,22 @@ public enum TokenType
     NotEqual,
 
     /// <summary>
-    ///  Оператор <c>></c>.
+    ///  Оператор <c><</c>.
     /// </summary>
     Less,
 
     /// <summary>
-    ///  Оператор <c>>=</c>.
+    ///  Оператор <c><=</c>.
     /// </summary>
     LessOrEqual,
 
     /// <summary>
-    ///  Оператор <c></c>.
+    ///  Оператор <c>></c>.
     /// </summary>
     Greater,
 
     /// <summary>
-    ///  Оператор <c>&gt;=</c>.
+    ///  Оператор <c>>=</c>.
     /// </summary>
     GreaterOrEqual,
 
