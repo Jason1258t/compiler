@@ -26,3 +26,6 @@ tests/coverage-report/
 # Sandbox directory
 sandbox/
 *.DS_Store
+
+# Код, генерируемый Reqnroll из .feature-файлов
+*.feature.cs
