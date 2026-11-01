@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/docs/">
+    <File Path="docs/specification.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Lexing/Lexing.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Lexing.UnitTests/Lexing.UnitTests.csproj" />
+  </Folder>
+</Solution>
