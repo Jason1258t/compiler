@@ -139,7 +139,7 @@ public class Parser
                 return result;
 
             default:
-                throw new SyntaxException($"ожидалось выражение, получено {current}");
+                throw UnexpectedToken("выражение");
         }
     }
 
@@ -196,9 +196,21 @@ public class Parser
     {
         if (current.Type != type)
         {
-            throw new SyntaxException($"ожидалось '{text}', получено {current}");
+            throw UnexpectedToken($"'{text}'");
         }
 
         Advance();
+    }
+
+    /// <summary>
+    ///  Создаёт ошибку о том, что вместо текущей лексемы ожидалось <paramref name="expected"/>.
+    /// </summary>
+    private SyntaxException UnexpectedToken(string expected)
+    {
+        string actual = current.Type == TokenType.EndOfFile
+            ? "получен конец файла"
+            : $"получено '{current.Text}'";
+
+        return new SyntaxException($"ожидалось {expected}, {actual}", current.Line, current.Column);
     }
 }

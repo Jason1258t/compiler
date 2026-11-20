@@ -56,6 +56,19 @@ public class Lexer
     {
         SkipWhitespacesAndComments();
 
+        int line = scanner.Line;
+        int column = scanner.Column;
+        int start = scanner.Position;
+        Token token = ParseTokenType();
+
+        return token with { Text = scanner.GetTextFrom(start), Line = line, Column = column };
+    }
+
+    /// <summary>
+    ///  Распознаёт лексему, начинающуюся с текущего символа.
+    /// </summary>
+    private Token ParseTokenType()
+    {
         if (scanner.IsEnd())
         {
             return new Token(TokenType.EndOfFile);
