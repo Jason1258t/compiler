@@ -12,4 +12,8 @@
     <Project Path="tests/Interpreter.Specs/Interpreter.Specs.csproj" />
     <Project Path="tests/Lexing.UnitTests/Lexing.UnitTests.csproj" />
   </Folder>
+  <Folder Name="/Элементы решения/">
+    <File Path="LICENSE" />
+    <File Path="README.md" />
+  </Folder>
 </Solution>
