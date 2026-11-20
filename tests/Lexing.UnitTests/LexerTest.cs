@@ -79,6 +79,34 @@ public class LexerTest
     }
 
     [Fact]
+    public void Records_source_text_and_position_of_tokens()
+    {
+        Lexer lexer = new("let x1 = 007;\n  /* c */ \"a\\n\" >=");
+        List<(TokenType Type, string Text, int Line, int Column)> expected =
+        [
+            (TokenType.Let, "let", 1, 1),
+            (TokenType.Identifier, "x1", 1, 5),
+            (TokenType.Assign, "=", 1, 8),
+            (TokenType.IntegerLiteral, "007", 1, 10),
+            (TokenType.Semicolon, ";", 1, 13),
+            (TokenType.StringLiteral, "\"a\\n\"", 2, 11),
+            (TokenType.GreaterOrEqual, ">=", 2, 17),
+            (TokenType.EndOfFile, string.Empty, 2, 19),
+        ];
+
+        List<(TokenType Type, string Text, int Line, int Column)> actual = [];
+        Token token;
+        do
+        {
+            token = lexer.ParseToken();
+            actual.Add((token.Type, token.Text, token.Line, token.Column));
+        }
+        while (token.Type != TokenType.EndOfFile);
+
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
     public void Returns_end_of_file_repeatedly_after_end_of_text()
     {
         Lexer lexer = new("x");

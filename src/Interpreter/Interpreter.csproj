@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>dotscript</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Execution\Execution.csproj" />
+    <ProjectReference Include="..\Lexing\Lexing.csproj" />
+    <ProjectReference Include="..\Parsing\Parsing.csproj" />
+  </ItemGroup>
+</Project>

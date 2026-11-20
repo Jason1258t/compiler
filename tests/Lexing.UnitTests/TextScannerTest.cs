@@ -34,6 +34,21 @@ public class TextScannerTest
     }
 
     [Fact]
+    public void Returns_text_from_given_position_to_current_one()
+    {
+        TextScanner scanner = new("ab\ncd");
+        scanner.Advance();
+        int start = scanner.Position;
+
+        scanner.Advance();
+        scanner.Advance();
+        scanner.Advance();
+
+        Assert.Equal((1, 4), (start, scanner.Position));
+        Assert.Equal("b\nc", scanner.GetTextFrom(start));
+    }
+
+    [Fact]
     public void Does_not_move_past_end_of_text()
     {
         TextScanner scanner = new("a");

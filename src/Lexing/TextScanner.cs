@@ -30,6 +30,11 @@ public class TextScanner
     public int Column { get; private set; } = 1;
 
     /// <summary>
+    ///  Индекс текущего символа в тексте (начиная с 0).
+    /// </summary>
+    public int Position => position;
+
+    /// <summary>
     ///  Возвращает символ на расстоянии <paramref name="offset"/> от позиции чтения
     ///  либо <see cref="EndOfText"/>, если текст закончился.
     /// </summary>
@@ -62,6 +67,14 @@ public class TextScanner
         }
 
         position++;
+    }
+
+    /// <summary>
+    ///  Возвращает фрагмент текста от индекса <paramref name="start"/> до текущей позиции чтения.
+    /// </summary>
+    public string GetTextFrom(int start)
+    {
+        return text[start..position];
     }
 
     /// <summary>
